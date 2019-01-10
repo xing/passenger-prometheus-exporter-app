@@ -1,0 +1,17 @@
+version: '3'
+services:
+  passenger:
+    build:
+      context: ../
+      dockerfile: test/Dockerfile
+    hostname: 'my-container'
+    ports:
+    - "10254:10254"
+    - "80:80"
+  test:
+    image: "phusion/passenger-ruby25:1.0.1"
+    command: ["bash", "-c", "--", "chmod +x /test/test.sh && /test/test.sh"]
+    links:
+    - passenger
+    volumes:
+    - ./:/test
