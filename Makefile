@@ -1,7 +1,7 @@
 .PHONY: clean test
 
 test: clean
-	@cd test && docker-compose build && docker-compose run test || docker-compose logs passenger
+	@cd test && docker-compose build && docker-compose run test
 
 clean:
-	@cd test && docker-compose down
+	@cd test && docker-compose down || true

@@ -1,17 +1,24 @@
 version: '3'
 services:
-  passenger:
+  passenger_with_app:
     build:
       context: ../
-      dockerfile: test/Dockerfile
-    hostname: 'my-container'
+      dockerfile: test/dockerfiles/Dockerfile.with-app
+    hostname: 'passenger_with_app'
     ports:
-    - "10254:10254"
-    - "80:80"
+    - 10254
+  passenger_without_app:
+    build:
+      context: ../
+      dockerfile: test/dockerfiles/Dockerfile.without-app
+    hostname: 'passenger_without_app'
+    ports:
+    - 10254
   test:
     image: "phusion/passenger-ruby25:1.0.1"
-    command: ["bash", "-c", "--", "chmod +x /test/test.sh && /test/test.sh"]
+    command: ["/src/test/run_all_tests.sh"]
     links:
-    - passenger
+    - passenger_with_app
+    - passenger_without_app
     volumes:
-    - ./:/test
+    - ../:/src

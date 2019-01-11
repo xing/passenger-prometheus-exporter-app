@@ -1,9 +1,0 @@
-# HELP passenger_capacity Capacity used
-# TYPE passenger_capacity gauge
-passenger_capacity{supergroup_name="/app (development)",group_name="/app (development)",hostname="my-container"} 1
-# HELP passenger_wait_list_size Requests in the queue
-# TYPE passenger_wait_list_size gauge
-passenger_wait_list_size{supergroup_name="/app (development)",group_name="/app (development)",hostname="my-container"} 0
-# HELP passenger_processes_active Active processes
-# TYPE passenger_processes_active gauge
-passenger_processes_active{supergroup_name="/app (development)",group_name="/app (development)",hostname="my-container"} 0

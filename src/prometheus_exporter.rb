@@ -12,11 +12,18 @@ class PrometheusExporterApp < Sinatra::Base
   COMMON_LABELS = {"hostname" => ENV["HOSTNAME"]}
 
   # Endpoint return the metrics in a Prometheus format
-  get '/metrics' do 
+  get '/metrics' do
     content_type 'text/plain'
+    passenger_prometheus_metrics
+  end
+
+  # Return passenger-status metrics in a Prometheus format
+  def passenger_prometheus_metrics
+    supergroups = passenger_status.xpath("info/supergroups/supergroup")
+    return "# ERROR: No other application has been loaded yet" if supergroups.length == 1
 
     metrics = []
-    for supergroup in hide_ourselves(passenger_status.xpath("info/supergroups/supergroup")) do
+    for supergroup in hide_ourselves(supergroups) do
       for group in supergroup.xpath("group") do
         labels = {"supergroup_name" => supergroup.xpath("name").text, "group_name" => group.xpath("name").text}
         metrics.concat(prometheus_metric("passenger_capacity", "Capacity used", "gauge", labels, group.xpath("capacity_used").text))
@@ -28,7 +35,7 @@ class PrometheusExporterApp < Sinatra::Base
     return metrics.map{ |line| "#{line}\n"}
   end
 
-  # Return lines describing a Prometheus metric
+  # Return lines describing one single Prometheus metric
   def prometheus_metric(name, help, type, labels, value)
     labels_str = labels.merge(COMMON_LABELS).map{|x,y| "#{x}=\"#{y}\""}.join(",")
     metric = []
