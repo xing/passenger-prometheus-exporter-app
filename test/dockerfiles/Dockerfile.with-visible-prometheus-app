@@ -10,5 +10,6 @@ RUN gem install nokogiri -v 1.10.0 --no-document \
     && curl -L -o /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64 \
     && chmod +x /usr/local/bin/dumb-init
 
-COPY /test/nginx-configurations/nginx.conf.erb /nginx.conf.erb
+COPY /test/nginx-configurations/nginx.conf-visible-prometheus.erb /nginx.conf.erb
+COPY /test/dummy-app /app
 COPY /src/ /monitor/
