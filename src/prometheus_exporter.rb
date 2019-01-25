@@ -26,9 +26,10 @@ class PrometheusExporterApp < Sinatra::Base
     for supergroup in hide_ourselves(supergroups) do
       for group in supergroup.xpath("group") do
         labels = {"supergroup_name" => supergroup.xpath("name").text, "group_name" => group.xpath("name").text}
+        active_processes = group.xpath("processes/process/busyness").reject{|x| x.text == "0"}.length
+        metrics.concat(prometheus_metric("passenger_processes_active", "Active processes", "gauge", labels, active_processes))
         metrics.concat(prometheus_metric("passenger_capacity", "Capacity used", "gauge", labels, group.xpath("capacity_used").text))
         metrics.concat(prometheus_metric("passenger_wait_list_size", "Requests in the queue", "gauge", labels, group.xpath("get_wait_list_size").text))
-        metrics.concat(prometheus_metric("passenger_processes_active", "Active processes", "gauge", labels, group.xpath("processes/process/busyness").text))
       end
     end
 
