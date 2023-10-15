@@ -1,7 +1,4 @@
-require "minitest/autorun"
-require "net/http"
-require "uri"
-require_relative "./helpers.rb"
+require_relative "test_helper"
 
 describe "passenger without application" do
   before do

@@ -1,14 +1,22 @@
-FROM phusion/passenger-ruby25:1.0.1
+FROM phusion/passenger-ruby32:2.5.1
 ENV PASSENGER_DISABLE_SECURITY_UPDATE_CHECK=true HOME=/app
 WORKDIR /app
 ENTRYPOINT ["/usr/local/bin/dumb-init"]
 
-CMD ["passenger", "start","--port","80","--log-file=/dev/stdout","--nginx-config-template", "/nginx.conf.erb"]
+CMD ["passenger", "start", "--port", "80", "--log-file=/dev/stdout", "--nginx-config-template", "/nginx.conf.erb"]
 
-RUN gem install nokogiri -v 1.10.0 --no-document \
-    && gem install sinatra -v 2.0.5 --no-document \
-    && curl -L -o /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64 \
+RUN gem install bundler \
+    && bundle config --global silence_root_warning 1
+
+COPY /src/Gemfile /monitor/Gemfile
+
+RUN cd /monitor \
+    && bundle install
+
+RUN curl -s -L -o /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_`uname -m` \
     && chmod +x /usr/local/bin/dumb-init
 
 COPY /test/nginx-configurations/nginx.conf.erb /nginx.conf.erb
 COPY /src/ /monitor/
+
+RUN mkdir /app/public && echo '<html><body><p>Nothing to see here!</p></body></html>' > /app/public/index.html

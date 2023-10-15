@@ -1,7 +1,4 @@
-.PHONY: clean test
+.PHONY: all clean test build run
 
-test: clean
-	@cd test && docker-compose build && docker-compose run test
-
-clean:
-	@cd test && docker-compose down || true
+all clean test build run:
+	$(MAKE) $(MAKEFLAGS) -C test $@

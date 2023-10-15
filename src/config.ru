@@ -1,2 +1,3 @@
-require "./prometheus_exporter.rb"
+require "bundler/setup"
+require_relative "prometheus_exporter"
 run PrometheusExporterApp

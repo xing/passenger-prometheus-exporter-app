@@ -22,7 +22,7 @@ services:
     ports:
     - 10254
   test:
-    image: "phusion/passenger-ruby25:1.0.1"
+    image: "phusion/passenger-ruby32:2.5.1"
     command: ["/src/test/run_all_tests.sh"]
     links:
     - passenger_with_app

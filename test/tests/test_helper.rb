@@ -1,3 +1,4 @@
+require "minitest/autorun"
 require "net/http"
 require "uri"
 
