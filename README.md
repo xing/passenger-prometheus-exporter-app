@@ -1,6 +1,6 @@
 # passenger-prometheus-exporter-app
 
-[![Build Status](https://travis-ci.org/xing/passenger-prometheus-exporter-app.svg?branch=master)](https://travis-ci.org/xing/passenger-prometheus-exporter-app)
+![Build](https://github.com/xing/passenger-prometheus-exporter-app/actions/workflows/run-tests.yml/badge.svg)
 
 Small application that runs on the Phusion Passenger webserver and exposes Passenger metrics in a
 Prometheus format.
